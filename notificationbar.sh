@@ -19,36 +19,50 @@
 
 function errorcode_return(){
 	RETVAL=$?
-	if [ $RETVAL -ne 0 ]; then
+	if [ $RETVAL -eq 0 ]; then
 		echo -e "\033[01;37m[\033[31m$RETVAL\033[37m] \033[m"
 		unset RETVAL
 	else
-		echo -e "\033[01;37m[\033[32m$RETVAL\033[37m] \033[m"
+		screenswidth="$COLUMNS"
+		tput sc
+		tput cup 1 0
+		while [ $screenswidth -gt 0 ]; do
+			printf  "\033[40m\033[07;01;31m ";
+#			echo -en "\033[46m \033[m";
+			((screenswidth -=1));
+		done
+		unset screenswidth
+		tput cup 1 0
+		echo -e "$RETVAL"
 		unset RETVAL
-
+		tput rc
 	fi
 }
 
-function notificationbar(){
+function nobar(){
 	tput sc
-	tput cup 0,0
+	tput cup 0 0
 	screenswidth=$(tput cols);
 	if [ $screenswidth == "1" ]; then
 		echo -en "\033[43m \033[m";
 		echo -e "\r\033[30m HELLO ";
 	fi
 	while [ $screenswidth -gt 0 ]; do
-		printf  "\033[46m \033[m";
+		printf  "\033[40m\033[07;01;36m ";
 #		echo -en "\033[46m \033[m";
 		((screenswidth -=1));
 	done
-	tput cup 0,0
-	echo -en "\033[01;46m $(date) \033[m"
-	echo -en "$(notificationbar)"
+	tput cup 0 0
+	echo -en "📂: $(dirs) \r"
+	tput cuf "$(expr "$COLUMNS" \- "$(date +'%a %b %d %Y %-I:%M:%S %p' | wc -L)")"; date +'%a %b %d %Y %-I:%M:%S %p'
+#	echo -en "$(notificationbar)"
 	tput rc
 unset screenswith;
 }
 
-ps1=$PS1
-export PS1="\`notificationbar\`\n$ps1"
+if [ ! $ps1 ]; then
+	ps1=$PS1
+fi
+
+export PS1="$ps1\`nobar\`"
 #tput sc; tput cols 0,0; notificationbar; tput rc

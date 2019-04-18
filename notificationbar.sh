@@ -17,6 +17,22 @@
 	#
 	################# Copyright 2019 - DX2 Digital Media Group #################
 
+function secondbar(){
+	sw=$COLUMNS
+	if [ -d ./.git ]; then
+		tput sc
+		tput cup 1 0
+		while [ $sw -gt 0 ]; do
+			printf  "\033[40m\033[07;01;31m ";
+#			echo -en "\033[46m \033[m";
+			((sw -=1));
+		done
+		tput rc
+	fi
+	unset sw
+}
+
+
 function errcode(){
 	RETVAL=$?
 	if [ $RETVAL -ne 0 ]; then
@@ -44,7 +60,7 @@ function nobar(){
 	tput cup 0 0
 # different folder icons
 # 📁📂	
-	echo -en "📂: $(dirs) \r" tput cuf "$(expr "$COLUMNS" \- "$(date +'%a %b %d %Y %-I:%M:%S %p' | wc -L)")"; date +'%a %b %d %Y %-I:%M:%S %p'
+	echo -en "📂: $(dirs) \r"; tput cuf "$(expr "$COLUMNS" \- "$(date +'%a %b %d %Y %-I:%M:%S %p' | wc -L)")"; date +'%a %b %d %Y %-I:%M:%S %p'
 #	echo -en "$(notificationbar)"
 	tput rc
 unset screenswith;

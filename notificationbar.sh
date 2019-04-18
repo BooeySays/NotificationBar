@@ -50,6 +50,7 @@ unset screenswith;
 }
 
 if [ ! $ps1 ]; then
+
 	ps1=$PS1
 fi
 if [ ! $errc ]; then

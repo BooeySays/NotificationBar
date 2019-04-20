@@ -16,6 +16,10 @@
 	# XTRA: NA
 	#
 	################# Copyright 2019 - DX2 Digital Media Group #################
+ThemeBG='\033[44m'
+ThemeFG='\033[30m'
+Theme="\033[m$ThemeFG$ThemeBG"
+
 
 function errcode(){
 	RETVAL=$?
@@ -28,6 +32,31 @@ function errcode(){
 	fi
 }
 
+function HorzLine(){
+    ScreenCols=$COLUMNS
+    while [ $ScreenCols -gt 0 ]; do
+        echo -en "\033[1;33m⎼\033[m"
+        ((ScreenCols -=1))
+    done
+    echo
+    unset ScreensCols
+
+	echo -en "\r\033[33m[ 🖿 \033[01;37m: $(dirs) ]\r"; tput cuf "$(expr "$COLUMNS" \- "$(date +'%a %b %d %Y %-I:%M:%S %p ' | wc -L)")"; echo -e $(date +'%a %b %d %Y %-I:%M:%S %p ')
+#    echo -en "\r 
+    ScreenCols=$COLUMNS
+    while [ $ScreenCols -gt 0 ]; do
+        echo -en "\033[1;33m⎼\033[m"
+#        printf "\033[04m \033[m"
+        ((ScreenCols -=1))
+    done
+    unset ScreensCols
+    echo -en "\e[m"
+}
+
+function CurrentDir(){
+	echo -en "[ \033[33m🖿 \033[01;37m: $(dirs) ]\r"; tput cuf "$(expr "$COLUMNS" \- "$(date +'%a %b %d %Y %-I:%M:%S %p ' | wc -L)")"; echo -en $(date +'%a %b %d %Y %-I:%M:%S %p ')
+}
+
 function nobar(){
 	tput sc
 	tput cup 0 0
@@ -37,14 +66,14 @@ function nobar(){
 		echo -e "\r\033[30m HELLO ";
 	fi
 	while [ $screenswidth -gt 0 ]; do
-		printf  "\033[40m\033[07;01;32m ";
+		printf  "$Theme ";
 #		echo -en "\033[46m \033[m";
 		((screenswidth -=1));
 	done
 	tput cup 0 0
 # different folder icons
-# 📁📂	
-	echo -en "📂: $(dirs) \r" tput cuf "$(expr "$COLUMNS" \- "$(date +'%a %b %d %Y %-I:%M:%S %p' | wc -L)")"; date +'%a %b %d %Y %-I:%M:%S %p'
+# 📁 📂
+	echo -en " \033[33m🖿 \033[01;37m:$Theme $(dirs) \r"; tput cuf "$(expr "$COLUMNS" \- "$(date +'%a %b %d %Y %-I:%M:%S %p ' | wc -L)")"; date +'%a %b %d %Y %-I:%M:%S %p '
 #	echo -en "$(notificationbar)"
 	tput rc
 unset screenswith;

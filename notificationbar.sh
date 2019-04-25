@@ -44,7 +44,7 @@ function nobar(){
 	tput cup 0 0
 # different folder icons
 # 📁📂	
-	echo -en "📂: $(dirs) \r" tput cuf "$(expr "$COLUMNS" \- "$(date +'%a %b %d %Y %-I:%M:%S %p' | wc -L)")"; date +'%a %b %d %Y %-I:%M:%S %p'
+	echo -en "📂: $(dirs) \r"; tput cuf "$(expr "$COLUMNS" \- "$(date +'%a %b %d %Y %-I:%M:%S %p' | wc -L)")"; date +'%a %b %d %Y %-I:%M:%S %p'
 #	echo -en "$(notificationbar)"
 	tput rc
 unset screenswith;
